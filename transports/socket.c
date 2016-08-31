@@ -154,7 +154,7 @@ wait_io:
 		if (!payload) {
 			if ((recvd = php_stream_xport_recvfrom(data->stream, buf, sizeof(buf), 0, NULL, NULL, NULL)) > 0) {
 				if (!(header = php_yar_protocol_parse(buf))) {
-					php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.32s'", payload);
+					php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.1024s'", payload);
 					return response;
 				}
 

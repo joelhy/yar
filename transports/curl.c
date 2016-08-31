@@ -393,7 +393,7 @@ yar_response_t *php_yar_curl_exec(yar_transport_interface_t* self, yar_request_t
 		payload_len = ZSTR_LEN(data->buf.s);
 
 		if (!(header = php_yar_protocol_parse(payload))) {
-			php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.32s'", payload);
+			php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.1024s'", payload);
 			return response;
 		}
 
@@ -578,7 +578,7 @@ static int php_yar_curl_multi_parse_response(yar_curl_multi_data_t *multi, yar_c
 							payload_len = ZSTR_LEN(data->buf.s);
 
 							if (!(header = php_yar_protocol_parse(payload))) {
-								php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.32s'", payload);
+								php_yar_error(response, YAR_ERR_PROTOCOL, "malformed response header '%.1024s'", payload);
 							} else {
 								/* skip over the leading header */
 								payload += sizeof(yar_header_t);
