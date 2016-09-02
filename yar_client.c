@@ -130,6 +130,10 @@ static void php_yar_client_handle_error(int throw_exception, yar_response_t *res
 			if (zend_hash_find(Z_ARRVAL_P(response->err), ZEND_STRS("_type"), (void **)&property) == SUCCESS) {
 				zend_update_property(yar_server_exception_ce, ex, ZEND_STRL("_type"), *property TSRMLS_CC);
 			}
+
+			if (zend_hash_find(Z_ARRVAL_P(response->err), ZEND_STRS("_server_trace_string"), (void **)&property) == SUCCESS) {
+				zend_update_property(yar_server_exception_ce, ex, ZEND_STRL("_server_trace_string"), *property TSRMLS_CC);
+			}
 			zend_throw_exception_object(ex TSRMLS_CC);
 		} else {
 			zval **msg, **code;

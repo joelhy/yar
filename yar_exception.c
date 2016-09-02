@@ -97,17 +97,37 @@ PHP_METHOD(yar_exception_server, getType)
 }
 /* }}} */
 
+/* {{{ proto Yar_Exception_Server::getServerTraceAsString()
+ */
+PHP_METHOD(yar_exception_server, getServerTraceAsString)
+{
+	zval *type;
+	type = zend_read_property(yar_server_exception_ce, getThis(), ZEND_STRL("_server_trace_string"), 0 TSRMLS_CC);
+
+	RETURN_ZVAL(type, 1, 0);
+}
+/* }}} */
+
 /* {{{ proto Yar_Exception_Client::getType()
  */
 PHP_METHOD(yar_exception_client, getType)
 {
 	RETURN_STRINGL("Yar_Exception_Client", sizeof("Yar_Exception_Client") - 1, 1);
 }
+
+/* }}} */
+/* {{{ proto Yar_Exception_Client::getServerTraceAsString()
+ */
+PHP_METHOD(yar_exception_client, getServerTraceAsString)
+{
+    RETURN_NULL();
+}
 /* }}} */
 
 /* {{{ yar_exception_server_methods */
 zend_function_entry yar_exception_server_methods[] = {
 	PHP_ME(yar_exception_server, getType, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(yar_exception_server, getServerTraceAsString, NULL, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 /* }}} */
@@ -115,6 +135,7 @@ zend_function_entry yar_exception_server_methods[] = {
 /* {{{ yar_exception_client_methods */
 zend_function_entry yar_exception_client_methods[] = {
 	PHP_ME(yar_exception_client, getType, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(yar_exception_client, getServerTraceAsString, NULL, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 /* }}} */
@@ -140,6 +161,7 @@ YAR_STARTUP_FUNCTION(exception) /* {{{ */ {
     INIT_CLASS_ENTRY(ce, "Yar_Client_Exception", yar_exception_client_methods);
 	yar_client_exception_ce = zend_register_internal_class_ex(&ce, php_yar_get_exception_base(0 TSRMLS_CC), NULL TSRMLS_CC);
 	zend_declare_property_stringl(yar_server_exception_ce, ZEND_STRL("_type"), ZEND_STRL("Yar_Exception_Server"), ZEND_ACC_PROTECTED TSRMLS_CC);
+	zend_declare_property_stringl(yar_server_exception_ce, ZEND_STRL("_server_trace_string"), ZEND_STRL("null"), ZEND_ACC_PROTECTED TSRMLS_CC);
 
     INIT_CLASS_ENTRY(ce, "Yar_Client_Transport_Exception", NULL);
 	yar_client_transport_exception_ce = zend_register_internal_class_ex(&ce, yar_client_exception_ce, NULL TSRMLS_CC);
