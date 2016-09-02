@@ -132,6 +132,10 @@ static void php_yar_client_handle_error(int throw_exception, yar_response_t *res
 				zend_update_property(yar_server_exception_ce, &ex, ZEND_STRL("_type"), property);
 			}
 
+			if ((property = zend_hash_str_find(Z_ARRVAL(response->err), ZEND_STRL("_server_trace_string"))) != NULL) {
+				zend_update_property(yar_server_exception_ce, &ex, ZEND_STRL("_server_trace_string"), property);
+			}
+
 			zend_throw_exception_object(&ex);
 		} else {
 			zval *msg, *code;
